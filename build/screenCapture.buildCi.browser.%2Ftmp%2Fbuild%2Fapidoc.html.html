@@ -305,6 +305,12 @@
 
         <li>
 
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">jsforce.</span>core</span>
+
+        </li>
+
+        <li>
+
             <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">jsforce.</span>csv</span>
 
         </li>
@@ -1682,6 +1688,103 @@
             function <span class="apidocSignatureSpan">jsforce.cache.prototype.</span>makeResponseCacheable
             <span class="apidocSignatureSpan">(fn, scope, options)</span>
             </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.jsforce.core">module jsforce.core</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.jsforce.core.Connection">
+            function <span class="apidocSignatureSpan">jsforce.core.</span>Connection
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.jsforce.core.Date">
+            function <span class="apidocSignatureSpan">jsforce.core.</span>Date
+            <span class="apidocSignatureSpan">(literal)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.jsforce.core.OAuth2">
+            function <span class="apidocSignatureSpan">jsforce.core.</span>OAuth2
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.jsforce.core.Promise">
+            function <span class="apidocSignatureSpan">jsforce.core.</span>Promise
+            <span class="apidocSignatureSpan">(fn)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.jsforce.core.RecordStream">
+            function <span class="apidocSignatureSpan">jsforce.core.</span>RecordStream
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.jsforce.core.SfDate">
+            function <span class="apidocSignatureSpan">jsforce.core.</span>SfDate
+            <span class="apidocSignatureSpan">(literal)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.jsforce.core.require">
+            function <span class="apidocSignatureSpan">jsforce.core.</span>require
+            <span class="apidocSignatureSpan">(name)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">number <span class="apidocSignatureSpan">jsforce.core.</span>_eventsCount</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">jsforce.core.</span>_events</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">jsforce.core.</span>domain</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">jsforce.core.</span>registry</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">string <span class="apidocSignatureSpan">jsforce.core.</span>VERSION</span>
 
         </li>
 
@@ -3365,6 +3468,8 @@ this.on('error', handleError)
     <li>description and source-code<pre class="apidocCodePre">transport = function () {}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
+
+
 
 
 
@@ -7130,6 +7235,269 @@ cacheOptions = { key: "compactLayouts." + this.type };
 this.compactLayouts$ = conn.cache.makeCacheable(this.compactLayouts, this, cacheOptions);
 ...</pre></li>
     </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.jsforce.core" id="apidoc.module.jsforce.core">module jsforce.core</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.jsforce.core.Connection" id="apidoc.element.jsforce.core.Connection">
+        function <span class="apidocSignatureSpan">jsforce.core.</span>Connection
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">Connection = function (options) {
+  options = options || {};
+
+  this._logger = new Logger(options.logLevel);
+
+  var oauth2 = options.oauth2 || {
+    loginUrl : options.loginUrl,
+    clientId : options.clientId,
+    clientSecret : options.clientSecret,
+    redirectUri : options.redirectUri,
+    proxyUrl: options.proxyUrl
+  };
+
+<span class="apidocCodeCommentSpan">  /**
+   * OAuth2 object
+   * @member {OAuth2} Connection#oauth2
+   */
+</span>  this.oauth2 = oauth2 = oauth2 instanceof OAuth2 ? oauth2 : new OAuth2(oauth2);
+
+  this.loginUrl = options.loginUrl || oauth2.loginUrl || defaults.loginUrl;
+  this.version = options.version || defaults.version;
+  this.maxRequest = options.maxRequest || this.maxRequest || 10;
+
+  /** @private */
+  this._transport =
+    options.proxyUrl ? new Transport.ProxyTransport(options.proxyUrl) : new Transport();
+
+  this.callOptions = options.callOptions;
+
+  /*
+   * Fire connection:new event to notify jsforce plugin modules
+   */
+  var jsforce = require('./core');
+  jsforce.emit('connection:new', this);
+
+  /**
+   * Streaming API object
+   * @member {Streaming} Connection#streaming
+   */
+  // this.streaming = new Streaming(this);
+  /**
+   * Bulk API object
+   * @member {Bulk} Connection#bulk
+   */
+  // this.bulk = new Bulk(this);
+  /**
+   * Tooling API object
+   * @member {Tooling} Connection#tooling
+   */
+  // this.tooling = new Tooling(this);
+  /**
+   * Analytics API object
+   * @member {Analytics} Connection#analytics
+   */
+  // this.analytics = new Analytics(this);
+  /**
+   * Chatter API object
+   * @member {Chatter} Connection#chatter
+   */
+  // this.chatter = new Chatter(this);
+  /**
+   * Metadata API object
+   * @member {Metadata} Connection#metadata
+   */
+  // this.metadata = new Metadata(this);
+
+  /**
+   * SOAP API object
+   * @member {SoapApi} Connection#soap
+   */
+  // this.soap = new SoapApi(this);
+
+  /**
+   * Apex REST API object
+   * @member {Apex} Connection#apex
+   */
+  // this.apex = new Apex(this);
+
+  /**
+   * @member {Process} Connection#process
+   */
+  this.process = new Process(this);
+
+  /**
+   * Cache object for result
+   * @member {Cache} Connection#cache
+   */
+  this.cache = new Cache();
+
+  // Allow to delegate connection refresh to outer function
+  var self = this;
+  var refreshFn = options.refreshFn;
+  if (!refreshFn &amp;&amp; this.oauth2.clientId &amp;&amp; this.oauth2.clientSecret) {
+    refreshFn = oauthRefreshFn;
+  }
+  if (refreshFn) {
+    this._refreshDelegate = new HttpApi.SessionRefreshDelegate(this, refreshFn);
+  }
+
+  var cacheOptions = {
+    key: function(type) { return type ? "describe." + type : "describe"; }
+  };
+  this.describe$ = this.cache.makeCacheable(this.describe, this, cacheOptions);
+  this.describe = this.cache.makeResponseCacheable(this.describe, this, cacheOptions);
+  this.describeSObject$ = this.describe$;
+  this.describeSObject = this.describe;
+
+  cacheOptions = { key: 'describeGlobal' };
+  this.describeGlobal$ = this.cache.makeCacheable(this.describeGlobal, this, cacheOptions);
+  this.describeGlobal = this.cache.makeResponseCacheable(this.describeGlobal, this, cacheOptions);
+
+  this.initialize(options);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.jsforce.core.Date" id="apidoc.element.jsforce.core.Date">
+        function <span class="apidocSignatureSpan">jsforce.core.</span>Date
+        <span class="apidocSignatureSpan">(literal)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">Date = function (literal) {
+  this._literal = literal;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.jsforce.core.OAuth2" id="apidoc.element.jsforce.core.OAuth2">
+        function <span class="apidocSignatureSpan">jsforce.core.</span>OAuth2
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">OAuth2 = function (options) {
+  if (options.authzServiceUrl &amp;&amp; options.tokenServiceUrl) {
+    this.loginUrl = options.authzServiceUrl.split('/').slice(0, 3).join('/');
+    this.authzServiceUrl = options.authzServiceUrl;
+    this.tokenServiceUrl = options.tokenServiceUrl;
+    this.revokeServiceUrl = options.revokeServiceUrl;
+  } else {
+    this.loginUrl = options.loginUrl || defaults.loginUrl;
+    this.authzServiceUrl = this.loginUrl + "/services/oauth2/authorize";
+    this.tokenServiceUrl = this.loginUrl + "/services/oauth2/token";
+    this.revokeServiceUrl = this.loginUrl + "/services/oauth2/revoke";
+  }
+  this.clientId = options.clientId;
+  this.clientSecret = options.clientSecret;
+  this.redirectUri = options.redirectUri;
+  this._transport =
+    options.proxyUrl ? new Transport.ProxyTransport(options.proxyUrl) : new Transport();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.jsforce.core.Promise" id="apidoc.element.jsforce.core.Promise">
+        function <span class="apidocSignatureSpan">jsforce.core.</span>Promise
+        <span class="apidocSignatureSpan">(fn)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function Promise(fn) {
+  if (typeof this !== 'object') {
+    throw new TypeError('Promises must be constructed via new');
+  }
+  if (typeof fn !== 'function') {
+    throw new TypeError('not a function');
+  }
+  this._45 = 0;
+  this._81 = 0;
+  this._65 = null;
+  this._54 = null;
+  if (fn === noop) return;
+  doResolve(fn, this);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.jsforce.core.RecordStream" id="apidoc.element.jsforce.core.RecordStream">
+        function <span class="apidocSignatureSpan">jsforce.core.</span>RecordStream
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">RecordStream = function () {
+  RecordStream.super_.call(this, { objectMode: true });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.jsforce.core.SfDate" id="apidoc.element.jsforce.core.SfDate">
+        function <span class="apidocSignatureSpan">jsforce.core.</span>SfDate
+        <span class="apidocSignatureSpan">(literal)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">SfDate = function (literal) {
+  this._literal = literal;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.jsforce.core.require" id="apidoc.element.jsforce.core.require">
+        function <span class="apidocSignatureSpan">jsforce.core.</span>require
+        <span class="apidocSignatureSpan">(name)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">require = function (name) {
+  if (name === './jsforce' || name === 'jsforce') {
+    name = './core';
+  }
+  var m = required[name];
+  if (typeof m === 'undefined') {
+    throw new Error("Cannot find module '" + name + "'");
+  }
+  return m;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
 
 
 </div>
