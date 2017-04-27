@@ -4,7 +4,7 @@
 <tspan x="10" y="26">26 megabytes installed</tspan>
 <tspan x="10" y="42"></tspan>
 <tspan x="10" y="58">node_modules</tspan>
-<tspan x="10" y="74">└─┬ jsforce@1.7.1 </tspan>
+<tspan x="10" y="74">└─┬ jsforce@1.7.2 </tspan>
 <tspan x="10" y="90">  ├─┬ co-prompt@1.0.0 </tspan>
 <tspan x="10" y="106">  │ └── keypress@0.2.1 </tspan>
 <tspan x="10" y="122">  ├── coffee-script@1.12.5 </tspan>
@@ -70,7 +70,7 @@
 <tspan x="10" y="1082">  │ │   ├─┬ dashdash@1.14.1 </tspan>
 <tspan x="10" y="1098">  │ │   │ └── assert-plus@1.0.0 </tspan>
 <tspan x="10" y="1114">  │ │   ├── ecc-jsbn@0.1.1 </tspan>
-<tspan x="10" y="1130">  │ │   ├─┬ getpass@0.1.6 </tspan>
+<tspan x="10" y="1130">  │ │   ├─┬ getpass@0.1.7 </tspan>
 <tspan x="10" y="1146">  │ │   │ └── assert-plus@1.0.0 </tspan>
 <tspan x="10" y="1162">  │ │   ├── jodid25519@1.0.2 </tspan>
 <tspan x="10" y="1178">  │ │   ├── jsbn@0.1.1 </tspan>
