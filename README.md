@@ -1,6 +1,6 @@
 # npmdoc-jsforce
 
-#### api documentation for  [jsforce (v1.7.1)](http://github.com/jsforce/jsforce)  [![npm package](https://img.shields.io/npm/v/npmdoc-jsforce.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-jsforce) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-jsforce.svg)](https://travis-ci.org/npmdoc/node-npmdoc-jsforce)
+#### basic api documentation for  [jsforce (v1.7.2)](http://github.com/jsforce/jsforce)  [![npm package](https://img.shields.io/npm/v/npmdoc-jsforce.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-jsforce) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-jsforce.svg)](https://travis-ci.org/npmdoc/node-npmdoc-jsforce)
 
 #### Salesforce API Library for JavaScript
 
@@ -21,61 +21,21 @@
 ```json
 
 {
-    "author": "Shinichi Tomita <shinichi.tomita@gmail.com>",
-    "name": "jsforce",
-    "description": "Salesforce API Library for JavaScript",
-    "keywords": [
-        "salesforce",
-        "salesforce.com",
-        "sfdc",
-        "force.com",
-        "database.com"
-    ],
-    "homepage": "http://github.com/jsforce/jsforce",
-    "version": "1.7.1",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/jsforce/jsforce.git"
-    },
-    "license": "MIT",
-    "licenses": [
-        {
-            "type": "MIT",
-            "url": "http://github.com/jsforce/jsforce/raw/master/LICENSE"
-        }
-    ],
-    "main": "./index",
-    "scripts": {
-        "build": "gulp build",
-        "build:test": "gulp build:test",
-        "build:all": "gulp build:all",
-        "doc": "jsdoc lib -d doc --recurse --lenient",
-        "test": "npm run test:node",
-        "test:all": "npm run test:node && npm run test:browser",
-        "test:node": "./test/bin/run-test",
-        "test:browser": "testem",
-        "prepublish": "node -e \"if(process.env.npm_package_version!==require('./lib/VERSION')){console.error('The pacakge.json version is not matching to ./lib/VERSION.js');process.exit(1)}\""
-    },
-    "directories": {
-        "test": "test/"
-    },
-    "files": [
-        "README.md",
-        "bower.json",
-        "LICENSE",
-        "package.json",
-        "bin",
-        "build",
-        "lib",
-        "test",
-        "core.js",
-        "index.js"
-    ],
-    "engines": {
-        "node": ">=0.12.0"
+    "author": {
+        "name": "Shinichi Tomita"
     },
     "bin": {
         "jsforce": "./bin/jsforce"
+    },
+    "browser": {
+        "./index": "./lib/browser/jsforce",
+        "./index.js": "./lib/browser/jsforce",
+        "./core": "./lib/browser/core",
+        "./core.js": "./lib/browser/core",
+        "request": "./lib/browser/request.js"
+    },
+    "bugs": {
+        "url": "https://github.com/jsforce/jsforce/issues"
     },
     "dependencies": {
         "co-prompt": "^1.0.0",
@@ -93,6 +53,7 @@
         "request": "^2.72.0",
         "xml2js": "^0.4.16"
     },
+    "description": "Salesforce API Library for JavaScript",
     "devDependencies": {
         "archiver": "^1.0.0",
         "async": "^1.5.2",
@@ -105,7 +66,7 @@
         "envify": "^3.4.0",
         "espower-loader": "^1.0.0",
         "espowerify": "^1.0.0",
-        "gulp": "gulpjs/gulp#4.0",
+        "gulp": "github:gulpjs/gulp#4.0",
         "gulp-rename": "^1.2.2",
         "gulp-sourcemaps": "^1.6.0",
         "gulp-uglify": "^1.5.3",
@@ -120,13 +81,68 @@
         "vinyl-source-stream": "^1.1.0",
         "webdriverio": "^4.0.4"
     },
-    "browser": {
-        "./index": "./lib/browser/jsforce",
-        "./index.js": "./lib/browser/jsforce",
-        "./core": "./lib/browser/core",
-        "./core.js": "./lib/browser/core",
-        "request": "./lib/browser/request.js"
-    }
+    "directories": {
+        "test": "test/"
+    },
+    "dist": {
+        "shasum": "03c8785d2f28e3fb7d6df1375fb4d3b148b00f7f",
+        "tarball": "https://registry.npmjs.org/jsforce/-/jsforce-1.7.2.tgz"
+    },
+    "engines": {
+        "node": ">=4.0"
+    },
+    "files": [
+        "README.md",
+        "bower.json",
+        "LICENSE",
+        "package.json",
+        "bin",
+        "build",
+        "lib",
+        "test",
+        "core.js",
+        "index.js"
+    ],
+    "gitHead": "4489c36558f609ef01e14bd2c18144fcb873adb4",
+    "homepage": "http://github.com/jsforce/jsforce",
+    "keywords": [
+        "salesforce",
+        "salesforce.com",
+        "sfdc",
+        "force.com",
+        "database.com"
+    ],
+    "license": "MIT",
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://github.com/jsforce/jsforce/raw/master/LICENSE"
+        }
+    ],
+    "main": "./index",
+    "maintainers": [
+        {
+            "name": "stomita"
+        }
+    ],
+    "name": "jsforce",
+    "optionalDependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/jsforce/jsforce.git"
+    },
+    "scripts": {
+        "build": "gulp build",
+        "build:all": "gulp build:all",
+        "build:test": "gulp build:test",
+        "doc": "jsdoc lib -d doc --recurse --lenient",
+        "prepublish": "node -e \"if(process.env.npm_package_version!==require('./lib/VERSION')){console.error('The pacakge.json version is not matching to ./lib/VERSION.js');process.exit(1)}\"",
+        "test": "npm run test:node",
+        "test:all": "npm run test:node && npm run test:browser",
+        "test:browser": "testem",
+        "test:node": "./test/bin/run-test"
+    },
+    "version": "1.7.2"
 }
 ```
 
